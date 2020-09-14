@@ -22,6 +22,10 @@ Merged_Data <- cbind(Subject, Y, X)
 
 TidyData <- Merged_Data %>% select(subject, code, contains("mean"), contains("std"))
 
+# Uses descriptive activity names to name the activities in the data set
+TidyData$code <- activities[TidyData$code, 2]
+
+# Appropriately labels the data set with descriptive variable names
 names(TidyData)[2] = "activity"
 names(TidyData)<-gsub("Acc", "Accelerometer", names(TidyData))
 names(TidyData)<-gsub("Gyro", "Gyroscope", names(TidyData))
@@ -36,6 +40,7 @@ names(TidyData)<-gsub("-freq()", "Frequency", names(TidyData), ignore.case = TRU
 names(TidyData)<-gsub("angle", "Angle", names(TidyData))
 names(TidyData)<-gsub("gravity", "Gravity", names(TidyData))
 
+# Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 FinalData <- TidyData %>%
   group_by(subject, activity) %>%
   summarise_all(funs(mean))
